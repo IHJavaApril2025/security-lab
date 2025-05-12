@@ -39,12 +39,16 @@ Crear una API REST segura con Spring Boot que implemente:
 
 Realiza pruebas con Postman para verificar que la seguridad funciona correctamente. Debes adjuntar capturas de pantalla de las siguientes pruebas:
 
-1. Acceso exitoso a una ruta pública que no requiere autenticación.
+1. Acceso exitoso a una ruta pública que no requiere autenticación
+![Caso1.JPG](screenshots/Caso1.JPG)
 2. Solicitud de login exitosa que devuelve el token JWT.
+![Caso2_.JPG](screenshots/Caso2_.JPG)
 3. Intento de acceso a una ruta protegida sin token (debe devolver código 401).
+![Caso3.JPG](screenshots/Caso3.JPG)
 4. Acceso exitoso a la misma ruta protegida incluyendo el token JWT (debe devolver código 200).
+![Caso4.JPG](screenshots/Caso4.JPG)
 5. Intento de acceso a una ruta que requiere un rol específico sin tener dicho rol (debe devolver código 403).
-
+![Caso5.JPG](screenshots/Caso5.JPG)
 ## Entrega
 
 - Asegúrate de que tu código está completo y funcional
