@@ -1,54 +1,150 @@
-# Spring Security Lab
+#  🔐  Sercurity Lab - Spring Boot + JWT
+Este proyecto es un laboratorio práctico diseñado para aprender a implementar autenticación y autorización en una API REST usando **Spring Boot**, **Spring Security** y **JWT (JSON Web Token)**.
 
-En este lab vamos a crear una aplicación Spring Boot con Spring Security y JWT. Aplicaremos los conceptos de autenticación y autorización que hemos aprendido en clase.
+---
 
-## Objetivo
+## 🚀 Tecnologías usadas
 
-Crear una API REST segura con Spring Boot que implemente:
-- Autenticación con JWT
-- Autorización basada en roles
-- Rutas públicas y protegidas
+- Java 21
+- Spring Boot 3
+- Spring Security
+- JWT (io.jsonwebtoken)
+- Maven
+- Lombok
+- Postman (para pruebas)
 
+---
 
-## Pasos a Seguir
+## 🛠️ Configuración inicial
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/planetWeb252/security-lab.git
+   cd security-lab 
+   ```
+2. Abre el proyecto en tu IDE favorito (IntelliJ IDEA, Eclipse, etc.).
+3. Ejecuta la aplicacion 
+   ```bash
+   mvn spring-boot:run
+   ```
+---
 
-### 1. Preparación del Proyecto
+## 📂 Estructura del Proyecto
 
-1. Fork de este repositorio y clona tu fork en tu máquina local.
-2. Accede a [Spring Initializr](https://start.spring.io/) para crear la app con las dependencias que indica la lección.
-3. Descarga el proyecto y descomprime todos los archivos **directamente en la raíz del repositorio**.
+```text
+src
+└── main
+    ├── java
+    │   └── com.securitylab
+    │       ├── auth            # Registro y login de usuarios
+    │       ├── config          # Configuración de seguridad y JWT
+    │       ├── controller      # Controladores protegidos y públicos
+    │       ├── user            # Modelo de Usuario y roles
+    │       └── SecurityLabApp  # Clase principal
+    └── resources
+        └── application.properties
+´´´
+```
+---
+## 🔑 Endpoints disponibles
+| Método | Endpoint                | Descripción                               |
+|--------|-------------------------|-------------------------------------------|
+| POST   | /api/creationUser         | Crea un Usuario                           |
+| GET    | /api/login  | Iniciar sesión y obtener un token JWT     |
+| GET    | /routeRequiredAuth/authenticated       | Comprueba que el Usuario esta autenticado |
+| GET    | //api/admin/hello     | Ruta para Usuarios con Rol Admin          |
 
-   **IMPORTANTE**: NO deberán aparecer subcarpetas con el nombre de la app, sino que todos los ficheros deben estar en la raíz del repositorio.
+## Crear Usuario:
+POST /api/creationUser
+Crea un nuevo usuario.
+Body (JSON)
+```json
+{
+   "username": "testUser",
+   "password": "1234",
+   "role": [
+      {
+         "name": "ROLE_USER"
+      },
+      {
+         "name": "ROLE_ADMIN"
+      }
+   ]
+}
+```
+## Login
+POST /api/login
+Loguear un Usuario.
+Body (JSON)
+```json
+{
+   "username": "testUser",
+   "password": "1234",
+   "role": [
+      {
+         "name": "ROLE_USER"
+      },
+      {
+         "name": "ROLE_ADMIN"
+      }
+   ]
+}
+```
+---
+## AUTHENTICATION
 
-### 2. Implementación
+GET /routeRequiredAuth/authenticated
+Ruta para usuario logueados.
+Body (JSON)
+```json
+{
+   "username": "testUser",
+   "password": "1234",
+   "role": [
+      {
+         "name": "ROLE_USER"
+      },
+      {
+         "name": "ROLE_ADMIN"
+      }
+   ]
+}
+```
+---
+## ADMIN
+GET /api/admin/hello
+Ruta para usuarios con rol ADMIN.
+Body (JSON)
+```json
+{
+   "username": "testUser",
+   "password": "1234",
+   "role": [
+      {
+         "name": "ROLE_USER"
+      },
+      {
+         "name": "ROLE_ADMIN"
+      }
+   ]
+}
+```
+## 🔒  Rutas Protegidas
+Las rutas protegidas requieren un token JWT válido para acceder. Puedes obtener un token JWT al iniciar sesión con un usuario registrado. El token debe ser enviado en el encabezado de autorización de la siguiente manera:
+```
+Authorization: Bearer <TOKEN_JWT>
+```
+---
+## ⚠️ Problemas Comunes
+- **Error 401 Unauthorized**: Asegúrate de que el token JWT es válido y no ha expirado.
+- **Error 403 Forbidden**: Asegúrate de que el usuario tiene los roles necesarios para acceder a la ruta.
+- **Error 500 Internal Server Error**: Revisa los logs de la aplicación para más detalles sobre el error.
+---
+## 🧪 Pruebas con Postman
 
-1. Sigue la lección de hoy para implementar paso a paso:
-   - Modelo de usuario y roles
-   - Repositorios
-   - Servicio de autenticación y generación de tokens JWT
-   - Filtros de seguridad
-   - Controladores con diferentes niveles de acceso
+1. **Crear Usuario**: Envía una solicitud POST a `/api/creationUser` con el cuerpo JSON para crear un nuevo usuario.
+2. **Iniciar Sesión**: Envía una solicitud POST a `/api/login` con el cuerpo JSON para obtener un token JWT.
+3. **Acceder a Rutas Protegidas**: Usa el token JWT obtenido en el paso anterior para acceder a las rutas protegidas. Asegúrate de incluir el token en el encabezado de autorización.
 
-2. Asegúrate de crear al menos:
-   - Una ruta pública que no requiera autenticación
-   - Una ruta para login que devuelva un token JWT
-   - Una ruta que requiera autenticación con cualquier rol
-   - Una ruta que requiera un rol específico (por ejemplo, ADMIN)
-
-### 3. Pruebas
-
-Realiza pruebas con Postman para verificar que la seguridad funciona correctamente. Debes adjuntar capturas de pantalla de las siguientes pruebas:
-
-1. Acceso exitoso a una ruta pública que no requiere autenticación.
-2. Solicitud de login exitosa que devuelve el token JWT.
-3. Intento de acceso a una ruta protegida sin token (debe devolver código 401).
-4. Acceso exitoso a la misma ruta protegida incluyendo el token JWT (debe devolver código 200).
-5. Intento de acceso a una ruta que requiere un rol específico sin tener dicho rol (debe devolver código 403).
-
-## Entrega
-
-- Asegúrate de que tu código está completo y funcional
-- Incluye las capturas de pantalla en una carpeta `screenshots` en la raíz del repositorio
-- Haz commit y push de tus cambios a tu fork
-- Crea un Pull Request a este repositorio original para que podamos revisar tu trabajo.
-- Entrega el enlace a tu Pull Request en el portal.
+---
+## 👤 Autor
+Desarrollado por mí, [planetWeb252](https://github.com/planetWeb252), como parte de mi aprendizaje de Spring Security y JWT.
